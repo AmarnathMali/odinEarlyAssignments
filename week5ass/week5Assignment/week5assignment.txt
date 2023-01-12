@@ -1,0 +1,281 @@
+------------user pojo class----------
+package week5ass;
+
+public class User {
+	String fName;
+	String sName;
+	String userName;
+	String password;
+
+	public User(String fName, String sName, String userName, String password) {
+		super();
+		this.fName = fName;
+		this.sName = sName;
+		this.userName = userName;
+		this.password = password;
+	}
+
+	public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+
+	public String getsName() {
+		return sName;
+	}
+
+	public void setsName(String sName) {
+		this.sName = sName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+        @Override
+	public String toString() {
+		return "User [fName=" + fName + ", sName=" + sName + ", userName=" + userName + ", password=" + password + "]";
+	}
+
+}
+------------IUser interface------------------
+package week5ass;
+
+public interface IUser {
+    
+    boolean sigin(String userName, String password );
+	void signup(User user);
+    
+}
+-------------------------UserImp class-------------------------
+package week5ass;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+public class UserImp implements IUser {
+	List<User> li = new LinkedList<>();
+
+	@Override
+	public boolean sigin(String userName, String password) {
+
+		Iterator<User> it = li.iterator();
+		while (it.hasNext()) {
+			User s = it.next();
+			if (s.userName.equals(userName) && s.password.equals(password)) {
+				System.out.println(userName + "!!!! Welcome to Autoshop world\n");
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	@Override
+	public void signup(User user) {
+
+		li.add(user);
+		System.out.println("Thank you… your registration success!!!");
+
+	}
+
+}
+---------------------Vehicle Pojo class-----------
+package week5ass;
+
+public class Vehicle {
+    String vName;
+    int mfgYear;
+    double price;
+	public Vehicle(String vName, int mfgYear, double price) {
+		super();
+		this.vName = vName;
+		this.mfgYear = mfgYear;
+		this.price = price;
+	}
+	public String getvName() {
+		return vName;
+	}
+	public void setvName(String vName) {
+		this.vName = vName;
+	}
+	public int getMfgYear() {
+		return mfgYear;
+	}
+	public void setMfgYear(int mfgYear) {
+		this.mfgYear = mfgYear;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	@Override
+	public String toString() {
+		return "Vehicle [vName=" + vName + ", mfgYear=" + mfgYear + ", price=" + price + "]";
+	}
+    
+    
+}
+---------------IVehicle ------------------
+package week5ass;
+
+public interface IVehicle {
+	void addingVehicles();
+    void avialableVehicle();
+    void sorting(String str);
+}
+------------------------------VehicleImp ------------------------
+package week5ass;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+
+class Price implements Comparator<Vehicle> {                  //using comparator to sort
+
+	@Override
+	public int compare(Vehicle o1, Vehicle o2) {
+		if (o1.price == o2.price)
+			return 0;
+		else if (o1.price > o2.price)
+			return 1;
+		else
+			return -1;
+	}
+
+}
+
+class MfgYear implements Comparator<Vehicle> {
+
+	@Override
+	public int compare(Vehicle o1, Vehicle o2) {
+		if (o1.mfgYear == o2.mfgYear) {
+			return 0;
+		} else if (o1.mfgYear > o2.mfgYear) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+
+}
+
+public class VehicleImp implements IVehicle {
+
+	LinkedList<Vehicle> lists = new LinkedList<>();
+
+	@Override
+	public void addingVehicles() {
+		lists.add(new Vehicle("Toyata", 2019, 3500.45));
+		lists.add(new Vehicle("suzuki", 2016, 5000));
+		lists.add(new Vehicle("Benz", 2021, 6000));
+		lists.add(new Vehicle("kia", 2020, 4500));
+
+	}
+
+	@Override
+	public void avialableVehicle() {
+		ArrayList<Vehicle> al = new ArrayList<>(lists);    //linkedlist to arraylist
+
+		System.out.println("List of Available Vehicles:");
+
+		for (Vehicle v : al) {
+			System.out.println(v.vName + " " + v.mfgYear + " " + v.price);
+		}
+
+	}
+
+	@Override
+	public void sorting(String str) {
+		ArrayList<Vehicle> al = new ArrayList<>(lists);
+		if (str.equals("mfgYear")) {
+			Collections.sort(al, new MfgYear());                       // sorting by year
+			for (Vehicle v : al) {
+				System.out.println(v.vName + " " + v.mfgYear + " " + v.price);
+			}
+		} else if (str.equals("price")) {
+			Collections.sort(al, new Price());                        //sorting by price
+			for (Vehicle v : al) {
+				System.out.println(v.vName + " " + v.mfgYear + " " + v.price);
+			}
+		}
+	}
+
+}
+-------------------------VehicleInventory class --- Main Method---------
+package week5ass;
+
+import java.util.Scanner;
+
+public class VehicleInventory {
+
+	public static void main(String[] args) {
+
+		Scanner scn = new Scanner(System.in);
+		System.out.println("Welcome to AUTOSHOP WORLD!!!\nPlease signup with your details");
+		System.out.println("Please enter your first name: ");
+		String firstName = scn.next();
+		System.out.println("Please enter your secondName: ");
+		String secondName = scn.next();
+		System.out.println("Please enter your username");
+		String username = scn.next();
+		System.out.println("Please enter your password: ");
+		String password = scn.next();
+
+		User u = new User(firstName, secondName, username, password);
+		IUser userObj = new UserImp();
+		userObj.signup(u);
+
+		System.out.println();
+		System.out.println("Please sign with your details");
+		System.out.println("please enter your username");
+		String un = scn.next();
+		System.out.println("please enter your password");
+		String pa = scn.next();
+
+		if (userObj.sigin(un, pa) == true) {
+			IVehicle vehi = new VehicleImp();
+			vehi.addingVehicles();
+			vehi.avialableVehicle();
+			System.out.println();
+			System.out.println(
+					"Please enter your input to sort details like 1.mfgYear , 2.price, 3.exit(type if you want to exit)");
+			while (true) {
+
+				String str = scn.next();
+				if (str.equals("exit")) {
+					System.out.println("Thank you!!! visit again..");
+					break;
+				} else {
+					vehi.sorting(str);
+				}
+			}
+
+			scn.close();
+
+		} else {
+			System.out.println("Invalid username and password");
+		}
+
+	}
+
+}
